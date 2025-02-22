@@ -1,0 +1,11 @@
+/home/diego.lopes/diego/notes/personal/job/Nxlog/telebot/rust_lib/open_meteo_wrapper/target/release/deps/libipnet-f556c694cc6c5453.rmeta: /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/lib.rs /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/ipext.rs /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/ipnet.rs /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/parser.rs /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/mask.rs
+
+/home/diego.lopes/diego/notes/personal/job/Nxlog/telebot/rust_lib/open_meteo_wrapper/target/release/deps/libipnet-f556c694cc6c5453.rlib: /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/lib.rs /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/ipext.rs /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/ipnet.rs /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/parser.rs /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/mask.rs
+
+/home/diego.lopes/diego/notes/personal/job/Nxlog/telebot/rust_lib/open_meteo_wrapper/target/release/deps/ipnet-f556c694cc6c5453.d: /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/lib.rs /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/ipext.rs /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/ipnet.rs /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/parser.rs /home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/mask.rs
+
+/home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/lib.rs:
+/home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/ipext.rs:
+/home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/ipnet.rs:
+/home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/parser.rs:
+/home/diego.lopes/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ipnet-2.11.0/src/mask.rs:
