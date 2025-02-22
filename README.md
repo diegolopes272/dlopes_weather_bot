@@ -26,9 +26,16 @@ make
 
 ## Running
 
-After building, you can run the app in the test folder.
+After building, you can run the app in the test folder:
+```sh
+./dlopes_bot
+```
 It's is needed to have a `.token` file in the same location.
-
 This token was generated with Telegram botfather - the dlopes_weather
+
+
+## Simple Test
+
+Running the app, open Telegram and send messages to dlopes_weather bot: https://t.me/dlopes_weather_bot
 
 
