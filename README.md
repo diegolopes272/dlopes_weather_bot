@@ -13,8 +13,8 @@ On Debian-based Linux distributions you can do it as follows:
 sudo apt-get install libcurl4-openssl-dev libjson-c-dev cmake binutils make
 ```
 
-Also is necessary to set up Rust build environment.
-Obs.: To avoid a error with no_mangle (unsafe attribute) during Rust build,
+Also is necessary to set up Rust build environment.<br>
+Obs.: To avoid an error with no_mangle (unsafe attribute) during Rust build,
 I've used the 1.84.0 version:
 
 ```sh

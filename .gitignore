@@ -34,6 +34,16 @@ Temporary Items
 # Xcode projects
 *.xcodeproj
 
+# Rust lib outputs - open-meteo
+rust_lib/target/
+rust_lib/target/**/*
+rust_lib/target/release/libopen_meteo_wrapper.so
+rust_lib/target/release/libopen_meteo_wrapper.a
+rust_lib/target/release/libopen_meteo_wrapper.dylib
+rust_lib/target/release/open_meteo_wrapper.dll
+rust_lib/target/release/deps/
+rust_lib/Cargo.lock
+
 # Bot token
 .token
 
@@ -49,3 +59,4 @@ build
 
 # CLion projects
 .idea
+

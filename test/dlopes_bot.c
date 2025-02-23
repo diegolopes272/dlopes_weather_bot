@@ -87,6 +87,19 @@ int getWeather(char *receive_msg, char *response_msg) {
         gps_coordinate = true;
     }
 
+
+    // TODO: Maybe here is good point to get cache data.
+    // If the coordinate (next) or city have recently (time to live to be defined),
+    // we can improve the performance getting the temperature from cache, avoiding
+    // new requests to open-meteo. This can be made using apr lib.
+    // With more time I probably could use "apr_hash_t" to implement it,
+    // using city name, temperature and timestamp.
+    // The response_msg need to format a basic json with current_weather
+    // and temperature
+
+
+    // Flow without cache data below
+
     // Try to get the weather depending of the type of the message
     char* weather_info = NULL;
     if (gps_coordinate) {
@@ -107,6 +120,9 @@ int getWeather(char *receive_msg, char *response_msg) {
             return e_error;
         }
     }
+
+
+    // TODO: Save to cache data
 
     memcpy(response_msg, weather_info, 1024);
     free_string(weather_info);
@@ -201,46 +217,34 @@ int telebotInit(telebot_handler_t *handle) {
 
 }
 
-
 /**
- * \brief   main program function
- * \return  e_success or e_error
+ * \brief   run_app eternal loop
  */
-int main(int argc, char *argv[])
-{
-    printf("[main] Starting dlopes_weather telegram bot..\n");
+void run_app (telebot_handler_t handle) {
 
-
-    #if RUN_TEST
-    testRoutines();
-    return e_success;
-    #endif
-
-    telebot_handler_t handle;
-    if (telebotInit(&handle) != e_success) {
-        printf("[main] Failed to telebotInit\n");
-        return e_error;
-    }
-
+    int limit = 20;
+    int timeout = 0;
     int index, count, offset = -1;
     telebot_error_e ret;
     telebot_message_t message;
     telebot_update_type_e update_types[] = {TELEBOT_UPDATE_TYPE_MESSAGE};
+    telebot_update_t *updates;
 
     while (1)
     {
-        telebot_update_t *updates;
-        ret = telebot_get_updates(handle, offset, 20, 0, update_types, 0, &updates, &count);
-        if (ret != TELEBOT_ERROR_NONE)
+        ret = telebot_get_updates(handle, offset, limit, timeout, update_types, 0, &updates, &count);
+        if (ret != TELEBOT_ERROR_NONE) {
             continue;
-        printf("[main] Number of updates: %d\n", count);
+        }
+        printf("[run_app] Number of updates: %d\n", count);
 
         // for each update
         for (index = 0; index < count; index++) {
             message = updates[index].message;
             if (message.text) {
-                printf("[main] Message from:%s %s: %s \n", message.from->first_name, message.from->last_name, message.text);
-                
+                printf("[run_app] Message from:%s %s: %s \n", message.from->first_name,
+                       message.from->last_name, message.text);
+
                 char ack_message[4096];
                 char weather_info[1024];
                 int rv;
@@ -253,6 +257,7 @@ int main(int argc, char *argv[])
                     char temperature_str[16];
                     rv = getTemperatureInfo(weather_info, temperature_str);
                     if (rv == e_success) {
+                        // set the temperature to message the user
                         snprintf(ack_message, SIZE_OF_ARRAY(ack_message), "<i>%s%s</i>",
                                     BASE_RESPONSE, temperature_str);
                     }
@@ -266,9 +271,10 @@ int main(int argc, char *argv[])
                 }
 
                 // reply the message
-                ret = telebot_send_message(handle, message.chat->id, ack_message, "HTML", false, false, updates[index].message.message_id, "");
+                ret = telebot_send_message(handle, message.chat->id, ack_message, "HTML", false,
+                                           false, updates[index].message.message_id, "");
                 if (ret != TELEBOT_ERROR_NONE) {
-                    printf("Failed to send message: %d \n", ret);
+                    printf("[run_app] Failed to send message: %d \n", ret);
                 }
 
             } //if message.text
@@ -283,7 +289,30 @@ int main(int argc, char *argv[])
 
         sleep(1);
     
-    } // while 1
+    } //while true
+
+}
+
+/**
+ * \brief   main program function
+ */
+int main(int argc, char *argv[])
+{
+    printf("[main] Starting dlopes_weather telegram bot..\n");
+
+    #if RUN_TEST
+        testRoutines();
+        return e_success;
+    #endif
+
+    telebot_handler_t handle;
+    if (telebotInit(&handle) != e_success) {
+        printf("[main] Failed to telebotInit\n");
+        return e_error;
+    }
+
+    // eternal loop
+    run_app(handle);
 
     telebot_destroy(handle);
 
