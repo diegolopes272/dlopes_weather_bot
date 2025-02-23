@@ -34,4 +34,6 @@ jobs:
           make
 
       - name: Run the tests of the app
-        run: ./test/dlopes_bot
+        run: |
+          cd build/test
+          ./dlopes_bot
