@@ -18,11 +18,10 @@
 #include <string.h>
 #include <unistd.h>
 #include <telebot.h>
-
 #include "cJSON.h"
 
 /*****************************************************************************************/
-// Imported funntions from Rust lib wrapper from open-meteo-api
+// Imported functions from Rust lib wrapper from open-meteo-api
 extern char* get_weather(double lat, double lon);
 extern char* get_weather_by_city(const char* city);
 extern void free_string(char* ptr);
@@ -45,8 +44,11 @@ extern void free_string(char* ptr);
 enum {
     e_success = 0,
     e_error = 1         // basic generic error
-
 };
+
+/*****************************************************************************************/
+// Prototypes
+void testRoutines(void);
 
 /*****************************************************************************************/
 // Functions
@@ -143,7 +145,7 @@ int getTemperatureInfo(char *receive_weather, char *temperature_info) {
     }
 
     char temperature_str[16];
-    snprintf(temperature_str, sizeof(temperature_str), "%.1f", temperature->valuedouble);
+    snprintf(temperature_str, sizeof(temperature_str), "%.1f °C", temperature->valuedouble);
 
     printf("[getTemperatureInfo] Temperature OK: %s\n", temperature_str);
     memcpy(temperature_info, temperature_str, 16);
@@ -156,7 +158,7 @@ int getTemperatureInfo(char *receive_weather, char *temperature_info) {
 /**
  * \brief  Initialize and get basic info from telebot handle
  * \param  handle    pointer to a telebot_handler_t
- * \return          e_success or e_error
+ * \return           e_success or e_error
  */
 int telebotInit(telebot_handler_t *handle) {
 
@@ -201,8 +203,8 @@ int telebotInit(telebot_handler_t *handle) {
 
 
 /**
- * \brief  main program function
- * \return          e_success or e_error
+ * \brief   main program function
+ * \return  e_success or e_error
  */
 int main(int argc, char *argv[])
 {
@@ -210,7 +212,8 @@ int main(int argc, char *argv[])
 
 
     #if RUN_TEST
-    testRoutine();
+    testRoutines();
+    return e_success;
     #endif
 
     telebot_handler_t handle;
@@ -286,3 +289,55 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
+
+
+
+/*****************************************************************************************/
+// Simple Tests - enable RUN_TEST on test/CMakeLists.txt to build and run it
+
+#if RUN_TEST
+/**
+ * \brief  Simple test routines to check the created functions
+ */
+void testRoutines(void) {
+
+    printf("[testRoutines] Initializing tests...\n");
+
+    // Test parse_gps_coordinates
+    double lat, lon;
+    if (parse_gps_coordinates("-23.0, -46.5", &lat, &lon) == e_success) {
+        printf("[testRoutines] parse_gps_coordinates OK: lat=%.1f, lon=%.1f\n", lat, lon);
+    } else {
+        printf("[testRoutines] parse_gps_coordinates FAIL\n");
+    }
+
+    // Test getWeather with city
+    char response_msg[1024] = { 0 };
+    if (getWeather("Braganca Paulista", response_msg) == e_success) {
+        printf("[testRoutines] getWeather city OK: %s\n", response_msg);
+    } else {
+        printf("[testRoutines] getWeather city FAIL\n");
+    }
+
+    // Test getWeather with coordinates
+    memset(response_msg, 0, sizeof(response_msg));
+    if (getWeather("-23.5, -46.1", response_msg) == e_success) {
+        printf("[testRoutines] getWeather coord OK: %s\n", response_msg);
+    } else {
+        printf("[testRoutines] getWeather coord FAIL\n");
+    }
+
+    // Test getTemperatureInfo
+    char temperature_info[16] = { 0 };
+    const char *mock_json = "{\"current_weather\": {\"temperature\": 25.5}}";
+    if (getTemperatureInfo((char *)mock_json, temperature_info) == e_success) {
+        printf("[testRoutines] getTemperatureInfo OK: %s\n", temperature_info);
+    } else {
+        printf("[testRoutines] getTemperatureInfo FAIL\n");
+    }
+
+    printf("[testRoutines] End of the tests.\n");
+}
+#endif
+

@@ -2,7 +2,7 @@ use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 use std::ptr;
 use reqwest::blocking::Client;
-use reqwest::Error;
+// use reqwest::Error;
 
 /// get weather by lat/long coordinates
 #[no_mangle]

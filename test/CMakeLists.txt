@@ -1,17 +1,58 @@
 
 # sources
-SET(TEST_NAME dlopes_bot)
-SET(TEST_SRC dlopes_bot.c cJSON.c)
+SET(APP dlopes_bot)
+SET(APP_SRC dlopes_bot.c cJSON.c)
+
+
+# To enable test routines uncoment the line bellow:
+#add_definitions(-DRUN_TEST)
 
 # executable
-ADD_EXECUTABLE(${TEST_NAME} ${TEST_SRC})
+ADD_EXECUTABLE(${APP} ${APP_SRC})
 
 # includes
-TARGET_INCLUDE_DIRECTORIES(${TEST_NAME} PRIVATE ${CMAKE_SOURCE_DIR})
+TARGET_INCLUDE_DIRECTORIES(${APP} PRIVATE ${CMAKE_SOURCE_DIR})
 
-#  Link the rust api lib
-SET(RUST_LIB_PATH "${CMAKE_SOURCE_DIR}/libopen_meteo_wrapper.so")
 
-TARGET_LINK_LIBRARIES(${TEST_NAME} ${PKGS_LDFLAGS} ${PROJECT_NAME} ${RUST_LIB_PATH} pthread)
+# Adding the build of the Rust lib
+SET(RUST_LIB_DIR "${CMAKE_SOURCE_DIR}/rust_lib/open_meteo_wrapper")
+SET(RUST_RELEASE_DIR "${RUST_LIB_DIR}/target/release")
+SET(RUST_LIB_NAME "libopen_meteo_wrapper.so")
+ADD_CUSTOM_COMMAND(
+    OUTPUT ${RUST_RELEASE_DIR}/${RUST_LIB_NAME}
+    COMMAND cargo build --release
+    WORKING_DIRECTORY ${RUST_LIB_DIR}
+    COMMENT "Building Rust library..."
+)
+
+ADD_CUSTOM_TARGET(
+    rust_lib ALL
+    DEPENDS ${RUST_RELEASE_DIR}/${RUST_LIB_NAME}
+)
+
+# Our project depends on rust_lib
+ADD_DEPENDENCIES(${APP} rust_lib)
+
+
+TARGET_LINK_LIBRARIES(${APP} ${PKGS_LDFLAGS} ${PROJECT_NAME} ${RUST_RELEASE_DIR}/${RUST_LIB_NAME} pthread)
+
+
+# Customized clean to also clear the rust library
+ADD_CUSTOM_TARGET(
+    clean-rust
+    COMMAND cargo clean
+    WORKING_DIRECTORY ${RUST_LIB_DIR}
+    COMMENT "Cleaning Rust build..."
+)
+
+# The clean-all
+ADD_CUSTOM_TARGET(
+    clean-all
+    COMMAND ${CMAKE_MAKE_PROGRAM} clean
+    DEPENDS clean-rust
+    COMMENT "Cleaning all build outputs, including Rust library..."
+)
+
+
 
 #EOF
