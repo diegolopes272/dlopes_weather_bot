@@ -1,4 +1,4 @@
-dname: CI/CD - Build and Tests
+name: CI/CD - Build and Tests
 
 on:
   push:
