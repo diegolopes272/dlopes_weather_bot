@@ -1,0 +1,37 @@
+dname: CI/CD - Build and Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev libjson-c-dev cmake binutils make
+
+      - name: Install Rust 1.84
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          source $HOME/.cargo/env
+          rustup override set 1.84.0
+
+      - name: Create build directory
+        run: mkdir build
+
+      - name: Compile the project with tests enabled
+        run: |
+          cd build
+          cmake ../ -DRUN_TESTING=ON
+          make
+
+      - name: Run the tests of the app
+        run: ./test/dlopes_bot

@@ -4,8 +4,16 @@ SET(APP dlopes_bot)
 SET(APP_SRC dlopes_bot.c cJSON.c)
 
 
-# To enable test routines uncoment the line bellow:
-#add_definitions(-DRUN_TEST)
+# Add a option to enable/disable tests
+option(RUN_TESTING "Enable test routines" OFF)
+
+# If RUN_TESTING is ON, define it as a preprocessor macro
+if(RUN_TESTING STREQUAL "ON")
+    add_definitions(-DRUN_TEST)
+    message(STATUS "RUN_TEST is turned on...")
+else()
+    message(STATUS "RUN_TEST is turned off")
+endif()
 
 # executable
 ADD_EXECUTABLE(${APP} ${APP_SRC})

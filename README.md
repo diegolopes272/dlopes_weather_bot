@@ -65,8 +65,19 @@ bot: https://t.me/dlopes_weather_bot
 
 
 ## Unitary Tests
-Some simple unit tests have been created that can be built and run by defining the line in
-test/CMakeLists.txt:
-#add_definitions(-DRUN_TEST)
+Some simple unit tests have been created that can be built and run by configuring cmake with:
+```sh
+cmake ../ -DRUN_TESTING=ON
+make
+```
+
+To clear the environment variable, use:
+```sh
+cmake ../ -DRUN_TESTING=OFF
+make
+```
 
 
+## CI/CD with Github
+
+Just an initial version - Please check it out in .github/workflows/ci.yml
