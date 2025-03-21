@@ -1,6 +1,6 @@
 # dlopes_weather_bot
 
-Created based on smartnode/telebot and open-meteo-api. Code test for Nxlog opportunity.
+Created based on smartnode/telebot and open-meteo-api. Studies with Telegram bot and Rust language.
 
 
 ## Building
